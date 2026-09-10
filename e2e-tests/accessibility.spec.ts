@@ -220,4 +220,29 @@ test.describe('Accessibility Tests', () => {
       await expect(gameCardSvgs.nth(i)).toHaveAttribute('aria-hidden', 'true');
     }
   });
+
+  test('high contrast mode - should toggle from the keyboard and persist across reloads', async ({ page }) => {
+    await page.goto('/');
+    const contrastToggle = page.getByRole('button', { name: /toggle high contrast mode/i });
+
+    await test.step('Enable high contrast mode', async () => {
+      await contrastToggle.focus();
+      await expect(contrastToggle).toBeFocused();
+      await page.keyboard.press('Enter');
+      await expect(contrastToggle).toHaveAttribute('aria-pressed', 'true');
+      await expect(page.locator('html')).toHaveClass(/high-contrast/);
+    });
+
+    await test.step('Keep the preference after a reload', async () => {
+      await page.reload();
+      await expect(page.locator('html')).toHaveClass(/high-contrast/);
+      await expect(page.getByTestId('contrast-toggle')).toHaveAttribute('aria-pressed', 'true');
+    });
+
+    await test.step('Allow the preference to be disabled', async () => {
+      await page.getByTestId('contrast-toggle').click();
+      await expect(page.locator('html')).not.toHaveClass(/high-contrast/);
+      await expect(page.getByTestId('contrast-toggle')).toHaveAttribute('aria-pressed', 'false');
+    });
+  });
 });
