@@ -10,7 +10,7 @@ const { rating } = Astro.props;
 
 {rating !== null && (
     <div class="flex items-center">
-        <span class="bg-blue-500/20 text-blue-400 text-sm px-3 py-1 rounded-full high-contrast:bg-black high-contrast:text-white high-contrast:border high-contrast:border-white" data-testid="game-rating" aria-label={`Rating: ${clampRating(rating).toFixed(1)} out of 5 stars`}>
+        <span class="bg-blue-500/20 text-blue-400 text-sm px-3 py-1 rounded-full high-contrast:bg-black high-contrast:text-white high-contrast:border high-contrast:border-white" data-testid="game-rating" role="img" aria-label={`Rating: ${clampRating(rating).toFixed(1)} out of 5 stars`}>
             <span class="text-yellow-400" aria-hidden="true">{formatStarRating(rating)}</span>
             <span aria-hidden="true">{clampRating(rating).toFixed(1)}</span>
         </span>
